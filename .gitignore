@@ -29,9 +29,24 @@ build/Release
 # Dependency directories
 node_modules
 jspm_packages
+data
+data/db
+typings
+server/Ipopt-exe-demo
+
 
 # Optional npm cache directory
 .npm
 
 # Optional REPL history
 .node_repl_history
+
+
+# VS bullshit
+
+.ntvs_analysis.dat
+.vs
+bin
+*.njsproj
+obj
+*.sln
