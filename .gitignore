@@ -50,3 +50,4 @@ bin
 *.njsproj
 obj
 *.sln
+*.bat

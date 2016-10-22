@@ -1,13 +1,13 @@
 angular.module('myApp').controller('loginController',
   ['$scope', '$location', 'AuthService',
     function ($scope, $location, AuthService) {
-        
+
         $scope.login = function () {
-            
+
             // initial values
             $scope.error = false;
             $scope.disabled = true;
-            
+
             // call login from service
             AuthService.login($scope.loginForm.username, $scope.loginForm.password)
         // handle success
@@ -31,9 +31,9 @@ angular.module('myApp').controller('loginController',
 angular.module('myApp').controller('logoutController',
   ['$scope', '$location', 'AuthService',
     function ($scope, $location, AuthService) {
-        
+
         $scope.logout = function () {
-            
+
             // call logout from service
             AuthService.logout()
         .then(function () {
@@ -47,13 +47,13 @@ angular.module('myApp').controller('logoutController',
 angular.module('myApp').controller('registerController',
   ['$scope', '$location', 'AuthService',
     function ($scope, $location, AuthService) {
-        
+
         $scope.register = function () {
-            
+
             // initial values
             $scope.error = false;
             $scope.disabled = true;
-            
+
             // call register from service
             AuthService.register($scope.registerForm.username, $scope.registerForm.password)
         // handle success
@@ -92,14 +92,14 @@ angular.module('myApp').controller('homeController',
         $scope.showGraphButtons = false;
         $scope.showResultStatus = false;
         // Dynamically update the ng-click of the button
-        $scope.buttons = [{ "method" : "charge", "title" : "Charge" }, 
-            { "method" : "discharge", "title" : "Discharge" }, 
+        $scope.buttons = [{ "method" : "charge", "title" : "Charge" },
+            { "method" : "discharge", "title" : "Discharge" },
             { "method" : "cycle", "title" : "Cycle" }];
-        
+
         $scope.graphData = [];
 
-        
-        
+
+
         $scope.chargeView = function () {
             $scope.pageHeader = 'Charging Panel';
             $scope.showCurrent = true;
@@ -110,7 +110,7 @@ angular.module('myApp').controller('homeController',
             $scope.btn = $scope.buttons[0];
             $scope.showGraph = false;
         };
-        
+
         $scope.dischargeView = function () {
             $scope.pageHeader = 'Discharging Panel';
             $scope.showCurrent = true;
@@ -122,7 +122,7 @@ angular.module('myApp').controller('homeController',
             $scope.showGraph = false;
 
         };
-        
+
         $scope.cycleView = function () {
             $scope.pageHeader = 'Coming Soon';
             $scope.showCurrent = false;
@@ -133,7 +133,7 @@ angular.module('myApp').controller('homeController',
             $scope.showGraph = false;
 
         };
-        
+
         $scope.parametersView = function () {
             $scope.pageHeader = 'Coming Soon';
             $scope.showCurrent = false;
@@ -142,14 +142,14 @@ angular.module('myApp').controller('homeController',
             $scope.showFormButtons = false;
             $scope.showGraph = false;
         };
-        
-        
+
+
         $scope.charge = function (simulation) {
             // send the charge current and charge time to the server and call appropriate function
             // alert("Charging");
             // create a new instance of deferred
             var deferred = $q.defer();
-            
+
             // send a post request to the server
             $http.post('/user/chargeSolution',
                 { current: simulation.current, time: simulation.time })
@@ -160,13 +160,14 @@ angular.module('myApp').controller('homeController',
                     $scope.resultStatus = "Model Solved! Choose Plot";
                     console.log(data.toString());
                     $scope.showGraphButtons = true;
-                    
+
                     $scope.options = { showLink: false, displayLogo: false };
                     var timeValues = [];
                     var tempValues = [];
                     var voltageValues = [];
                     var currentValues = [];
                     var fadeValues = [];
+                    var socValues = [];
 
                     data.forEach(function (stepData) {
                         timeValues.push(stepData.timeVal);
@@ -174,14 +175,25 @@ angular.module('myApp').controller('homeController',
                         voltageValues.push(stepData.voltageVal);
                         currentValues.push(stepData.currentVal);
                         fadeValues.push(stepData.fadeVal);
+                        socValues.push(stepData.socVal);
                     });
 
                     $scope.plotVoltage = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
-                        $scope.layout = { height: 500, width: 500, title: 'Voltage' };
+                        $scope.layout = {
+                          height: 500,
+                          width: 500,
+                          title: 'Voltage',
+                          xaxis: {
+                              title: 'Time (sec)'
+                            },
+                            yaxis: {
+                                title: 'Voltage (V)',
+                            }
+                        };
                         $scope.graphData = [{
-                                x : timeValues, 
+                                x : timeValues,
                                 y : voltageValues
                             }];
                     };
@@ -189,30 +201,64 @@ angular.module('myApp').controller('homeController',
                     $scope.plotCurrent = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
-                        $scope.layout = { height: 500, width: 500, title: 'Current' };
+                        $scope.layout = { height: 500, width: 500, title: 'Current',
+                        xaxis: {
+                            title: 'Time (sec)'
+                          },
+                          yaxis: {
+                              title: 'Current (A)',
+                          } };
                         $scope.graphData = [{
-                                x : timeValues, 
+                                x : timeValues,
                                 y : currentValues
                             }];
                     };
-                    
+
                     $scope.plotFade = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
-                        $scope.layout = { height: 500, width: 500, title: 'Fade' };
+                        $scope.layout = { height: 500, width: 500, title: 'Fade',
+                        xaxis: {
+                            title: 'Time (sec)'
+                          },
+                          yaxis: {
+                              title: 'Fade (Ah)',
+                          } };
                         $scope.graphData = [{
-                                x : timeValues, 
+                                x : timeValues,
                                 y : fadeValues
                             }];
                     };
-                    
+
                     $scope.plotTemperature = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
-                        $scope.layout = { height: 500, width: 500, title: 'Temperature' };
+                        $scope.layout = { height: 500, width: 500, title: 'Temperature',
+                        xaxis: {
+                            title: 'Time (sec)'
+                          },
+                          yaxis: {
+                              title: 'Temperature (K)',
+                          } };
                         $scope.graphData = [{
-                                x : timeValues, 
-                                y : temperatureValues
+                                x : timeValues,
+                                y : tempValues
+                            }];
+                    };
+
+                    $scope.plotSoC = function () {
+                        $scope.showResultStatus = true;
+                        $scope.showGraph = true;
+                        $scope.layout = { height: 500, width: 500, title: 'SoC',
+                        xaxis: {
+                            title: 'Time (sec)'
+                          },
+                          yaxis: {
+                              title: 'SoC (%)',
+                          } };
+                        $scope.graphData = [{
+                                x : timeValues,
+                                y : socValues
                             }];
                     };
 
@@ -228,17 +274,17 @@ angular.module('myApp').controller('homeController',
                 user = false;
                 deferred.reject();
             });
-            
+
             // return promise object
             return deferred.promise;
         };
-        
+
         $scope.discharge = function (simulation) {
             // send the discharge current and discharge time to the server and call appropriate function
-            
+
             // create a new instance of deferred
             var deferred = $q.defer();
-            
+
             // send a post request to the server
             $http.post('/user/dischargeSolution',
                 { current: simulation.current })
@@ -257,7 +303,7 @@ angular.module('myApp').controller('homeController',
                 user = false;
                 deferred.reject();
             });
-            
+
             // return promise object
             return deferred.promise;
         }

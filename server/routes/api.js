@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-
+var execFile = require('child_process').execFile;
+var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var readline = require('readline');
@@ -59,12 +60,12 @@ router.post('/chargeSolution', function (req, res) {
     var chargeSimulation = function (current, time) {
         console.log("Starting exe");
         console.log(__dirname);
-        var cmd = 'D:/CP/BII/simulation-demo/sim-demo/server/Ipopt-exe-demo/Eg-C.exe';
-        var cwd = 'D:/CP/BII/simulation-demo/sim-demo/server/Ipopt-exe-demo';
-        var final_time_path = 'D:/CP/BII/simulation-demo/sim-demo/server/Ipopt-exe-demo/final_time.txt';
-        var bounds_path = 'D:/CP/BII/simulation-demo/sim-demo/server/Ipopt-exe-demo/bounds.txt';
-        var scaleparam_path = 'D:/CP/BII/simulation-demo/sim-demo/server/Ipopt-exe-demo/scaleparam.txt';
-        var data_path = 'D:/CP/BII/simulation-demo/sim-demo/server/Ipopt-exe-demo/data.txt';
+        var cmd = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/Eg-C.exe';
+        var cwd = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo';
+        var final_time_path = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/final_time.txt';
+        var bounds_path = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/bounds.txt';
+        var scaleparam_path = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/scaleparam.txt';
+        var data_path = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/data.txt';
 
         // Updating the boudns file
         var bound_instream = fs.createReadStream(bounds_path);
@@ -75,97 +76,121 @@ router.post('/chargeSolution', function (req, res) {
         var scale_count = 1;
         var data_count = 1;
         var bound_writeString = "0" + "\t\t" + current * 18;
-        
+
         var index_temp = 12; // 13 in maple
         var index_fade = 13;
         var index_voltage = 14;
         var index_current = 31;
-        var node_points = 70; // predecided in maple 
+        var index_soc = 9;
+        var node_points = 70; // predecided in maple
 
-        rl_bound.on('line', function (bound_line) {
+        /*rl_bound.on('line', function (bound_line) {
             // process line here
             arr_bound.push(bound_line);
             bound_count = bound_count + 1;
             if (bound_count == 32) {
                 arr_bound.push(bound_writeString);
                 var bound_writeText = arr_bound.join("\n");
-                
+
                 fs.writeFile(bounds_path, bound_writeText, function (err) {
                     if (err) return console.log(err);
                 });
-                
+
                 rl_bound.close();
             }
         });
-        
+*/
+        fs.readFileSync(bounds_path).toString().split("\n").forEach(function (bound_line) {
+		      //console.log("Reading bounds file" + line);
+	        arr_bound.push(bound_line);
+	        bound_count = bound_count + 1;
+	        if (bound_count == 32) {
+		        arr_bound.push(bound_writeString);
+		        var bound_writeText = arr_bound.join("\n");
+
+		        try {
+			        fs.writeFileSync(bounds_path, bound_writeText);
+		        }
+		        catch (er) {
+			        console.log("Error in writing to the bounds file");
+			        process.exit(1);
+		        }
+	        }
+        });
         // Write time to the final time file.
         fs.writeFileSync(final_time_path, time);
-        
-        var execFile = require('child_process').execFile;
+
+
         // Perform the simulation
-        execFile(cmd, { cwd : cwd }, function (error, stdout, stderr) {
-            if (error) {
-                console.log("Error running the exe" + error);
-                throw error;
-            }
-            console.log(stdout);
-            
+        //execFile("dir");
+        // execFile(cmd, { cwd : cwd }, function (error, stdout, stderr) {
+        //     if (error) {
+        //         console.log("Error running the exe" + error);
+        //         throw error;
+        //     }
+        //     console.log(stdout);
+        try {
+        var output1 = execFileSync(cmd, {cwd : cwd}).toString();
+        //  var output2 = execFileSync(cmd, {cwd : cwd}).toString();
+        console.log("output of the simulation -------------------------------" + "\n\n" + output1);
+        //  console.log("output of the simulation -------------------------------" + "\n\n" + output1);
+      }
+
+      catch (er) {
+        console.log("There was an error " + er.file + er.pid + er.status);
+        process.exit(1);
+      }
             // Extract results
-            
-            // Extract scaleparams into an array
-            var scale_instream = fs.createReadStream(scaleparam_path);
-            var scale_outstream = new stream;
-            var rl_scale = readline.createInterface(scale_instream, scale_outstream);
-            var arr_scale = [];
-            rl_scale.on('line', function (scale_line) {
-                console.log("Reading scaleparams :" +  scale_line)
-                arr_scale.push(scale_line);
-                scale_count = scale_count + 1;
-                if (scale_count == 33) {
-                    console.log("Read all the scale params");
-                    
-                    // Extract data into an array
-                    var data_instream = fs.createReadStream(data_path);
-                    var data_outstream = new stream;
-                    var rl_data = readline.createInterface(data_instream, data_outstream);
-                    var arr_data = [];
 
-                    rl_data.on('line', function (data_line) {
-                        console.log("Reading data :" + data_line)
-                        arr_data.push(data_line);
-                        data_count = data_count + 1;
-                        if (data_count == 32 * node_points + 1) {
-                            console.log("Read all the data");
+        // Extract scaleparams into an array
+        /*var scale_instream = fs.createReadStream(scaleparam_path);
+        var scale_outstream = new stream;
+        var rl_scale = readline.createInterface(scale_instream, scale_outstream);*/
+        var arr_scale = [];
 
-                            var result_data = [];
-                            
-                            // parse the data array to get relevant results
-                            for (var i = 1; i <= 70; i++) {
-                                result_data.push({
-                                    timeVal : i * time / node_points, 
-                                    tempVal : arr_scale[index_temp] * arr_data[i + node_points * (index_temp - 1)], 
-                                    fadeVal : arr_scale[index_fade] * arr_data[i + node_points * (index_fade - 1)], 
-                                    voltageVal : arr_scale[index_voltage] * arr_data[i + node_points * (index_voltage - 1)], 
-                                    currentVal : arr_scale[index_current] * arr_data[i + node_points * (index_current - 1)]
-                                });
-                            }
-                            
-                            // send the data to the client
-                            res.status(200).json(result_data);
-                            
-                            rl_scale.close();
-                            rl_data.close();
+	    fs.readFileSync(scaleparam_path).toString().split("\n").forEach(function (scale_line) {
+            console.log("Reading scaleparams :" +  scale_line);
+            arr_scale.push(scale_line);
+            scale_count = scale_count + 1;
+            if (scale_count == 33) {
+                console.log("Read all the scale params");
 
+                // Extract data into an array
+                /*var data_instream = fs.createReadStream(data_path);
+                var data_outstream = new stream;
+                var rl_data = readline.createInterface(data_instream, data_outstream);*/
+                var arr_data = [];
+
+	            fs.readFileSync(data_path).toString().split("\n").forEach(function (data_line) {
+                    console.log("Reading data :" + data_line)
+                    arr_data.push(data_line);
+                    data_count = data_count + 1;
+                    if (data_count == 32 * node_points + 1) {
+                        console.log("Read all the data");
+
+                        var result_data = [];
+
+                        // parse the data array to get relevant results
+                        for (var i = 1; i <= 70; i++) {
+                            result_data.push({
+                                timeVal : i * time / node_points,
+                                tempVal : arr_scale[index_temp] * arr_data[i + node_points * (index_temp) - 1],
+                                fadeVal : -1 * arr_scale[index_fade] * arr_data[i + node_points * (index_fade) - 1],
+                                voltageVal : arr_scale[index_voltage] * arr_data[i + node_points * (index_voltage) - 1],
+                                currentVal : arr_scale[index_current] * arr_data[i + node_points * (index_current) - 1],
+                                socVal : ((100 * arr_scale[index_soc] * arr_data[i + node_points * (index_soc) - 1]) / 30555 - 0.259)/(0.99 - 0.259)    // soc calculation is subjective to battery parameters
+                            });
                         }
 
+                        // send the data to the client
+                        res.status(200).json(result_data);
+
+                        }
                     });
                 }
             });
-        });
+          }
 
-        delete execFile;
-    }
-    
     chargeSimulation(current, time);
 });
 
