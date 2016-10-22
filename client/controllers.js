@@ -91,6 +91,7 @@ angular.module('myApp').controller('homeController',
         $scope.showGraph = false;
         $scope.showGraphButtons = false;
         $scope.showResultStatus = false;
+        $scope.showGraphCard = false;
         // Dynamically update the ng-click of the button
         $scope.buttons = [{ "method" : "charge", "title" : "Charge" },
             { "method" : "discharge", "title" : "Discharge" },
@@ -109,6 +110,7 @@ angular.module('myApp').controller('homeController',
             $scope.actionText = "Charge";
             $scope.btn = $scope.buttons[0];
             $scope.showGraph = false;
+            $scope.showGraphCard = false;
         };
 
         $scope.dischargeView = function () {
@@ -120,6 +122,7 @@ angular.module('myApp').controller('homeController',
             $scope.actionText = "Discharge";
             $scope.btn = $scope.buttons[1];
             $scope.showGraph = false;
+            $scope.showGraphCard = false;
 
         };
 
@@ -131,7 +134,7 @@ angular.module('myApp').controller('homeController',
             $scope.showFormButtons = false;
             $scope.actionText = "Cycle";
             $scope.showGraph = false;
-
+            $scope.showGraphCard = false;
         };
 
         $scope.parametersView = function () {
@@ -141,6 +144,7 @@ angular.module('myApp').controller('homeController',
             $scope.showCycle = false;
             $scope.showFormButtons = false;
             $scope.showGraph = false;
+            $scope.showGraphCard = false;
         };
 
 
@@ -148,6 +152,11 @@ angular.module('myApp').controller('homeController',
             // send the charge current and charge time to the server and call appropriate function
             // alert("Charging");
             // create a new instance of deferred
+            $scope.showGraph = false;
+            $scope.resultStatus = '';
+            $scope.showGraphButtons = false;
+            $scope.showGraphCard = false;
+
             var deferred = $q.defer();
 
             // send a post request to the server
@@ -156,6 +165,7 @@ angular.module('myApp').controller('homeController',
                 // handle success
                 .success(function (data, status) {
                 if (status === 200) {
+                    $scope.showGraphCard = false;
                     $scope.showResultStatus = true;
                     $scope.resultStatus = "Model Solved! Choose Plot";
                     console.log(data.toString());
