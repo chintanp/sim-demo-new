@@ -80,7 +80,8 @@ angular.module('myApp').controller('homeController',
   ['$scope', '$location', '$q', '$http', 'AuthService',
     function ($scope, $location, $q, $http, AuthService) {
         $scope.resultStatus = '';
-        $scope.pageHeader = 'Select action';
+        $scope.pageHeader = 'Charging Panel';
+        $scope.supportingTextHeader = 'Enter values and click button charge to simulate charging';
         $scope.showCurrent = false;
         $scope.showTime = false;
         $scope.showCycle = false;
@@ -92,11 +93,13 @@ angular.module('myApp').controller('homeController',
         $scope.showGraphButtons = false;
         $scope.showResultStatus = false;
         $scope.showGraphCard = false;
+
         // Dynamically update the ng-click of the button
         $scope.buttons = [{ "method" : "charge", "title" : "Charge" },
             { "method" : "discharge", "title" : "Discharge" },
             { "method" : "cycle", "title" : "Cycle" }];
-
+        $scope.actionText = "Charge";
+        $scope.btn = $scope.buttons[0];
         $scope.graphData = [];
 
 
@@ -165,7 +168,7 @@ angular.module('myApp').controller('homeController',
                 // handle success
                 .success(function (data, status) {
                 if (status === 200) {
-                    $scope.showGraphCard = false;
+                    $scope.showGraphCard = true;
                     $scope.showResultStatus = true;
                     $scope.resultStatus = "Model Solved! Choose Plot";
                     console.log(data.toString());

@@ -5,7 +5,7 @@
         function ($window) {
             return {
                 restrict: 'E',
-                template: '<div></div>',
+                template: '<div ></div>',
                 scope: {
                     plotlyData: '=',
                     plotlyLayout: '=',
@@ -15,11 +15,11 @@
                 link: function (scope, element) {
                     var graph = element[0].children[0];
                     var initialized = false;
-                    
+
                     function subscribeToEvents(graph) {
                         scope.plotlyEvents(graph);
                     }
-                    
+
                     function onUpdate() {
                         //No data yet, or clearing out old data
                         if (!(scope.plotlyData)) {
@@ -42,12 +42,12 @@
                         Plotly.redraw(graph);
                         Plotly.Plots.resize(graph);
                     }
-                    
+
                     function onResize() {
                         if (!(initialized && scope.plotlyData)) return;
                         Plotly.Plots.resize(graph);
                     }
-                    
+
                     scope.$watch(
                         function (scope) {
                             return scope.plotlyLayout;
@@ -56,7 +56,7 @@
                             if (angular.equals(newValue, oldValue) && initialized) return;
                             onUpdate();
                         }, true);
-                    
+
                     scope.$watch(
                         function (scope) {
                             return scope.plotlyData;
@@ -65,7 +65,7 @@
                             if (angular.equals(newValue, oldValue) && initialized) return;
                             onUpdate();
                         }, true);
-                    
+
                     scope.$watch(function () {
                         return {
                             'h': element[0].offsetHeight,
@@ -75,7 +75,7 @@
                         if (angular.equals(newValue, oldValue)) return;
                         onResize();
                     }, true);
-                    
+
                     angular.element($window).bind('resize', onResize);
                 }
             };

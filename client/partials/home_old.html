@@ -1,90 +1,5 @@
-<div id="wrapper" ng-controller="homeController"  >
-    <!-- Top Card - Input form panel -->
-    <div class="card text-xs-center">
-        <div class="card-header">
-            <ul class="nav nav-pills card-header-pills float-xs-left">
-                <li class="nav-item">
-                    <a class="nav-link active" ng-click="chargeView()">Charging</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Discharging</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Cycle</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Parameters</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Database</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-block">
-            <h4 class="card-title">{{ pageHeader }}</h4>
-            <p class="card-text"> {{ supportingTextHeader }}</p>
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="inputCurrent">Current</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="1" aria-describedby="inputCurrent" ng-model="simulation.current">
-                        <span class="input-group-addon" id="inputCurrent">C</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputTime">Time</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="1800" aria-describedby="inputTime" ng-model="simulation.time">
-                        <span class="input-group-addon" id="inputTime">sec</span>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary" ng-click="this[btn.method](simulation)">{{ actionText }}</button>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- Graph Card -->
-    <div class="card card-block text-xs-center" ng-show="showGraphCard">
-        <div class="row" ng-show="showGraphButtons">
-            <div class="col-lg-12">
-                <div ng-show="showResultStatus" class="alert alert-success">{{ resultStatus }}</div>
-                <div class="btn-group btn-group-lg " role="group" aria-label="...">
-
-                    <button type="button" class="btn btn-secondary" ng-click="plotVoltage()">Voltage</button>
-
-
-                    <button type="button" class="btn btn-secondary" ng-click="plotCurrent()">Current</button>
-
-
-                    <button type="button" class="btn btn-secondary" ng-click="plotSoC()">SoC</button>
-
-
-                    <button type="button" class="btn btn-secondary" ng-click="plotFade()">Fade</button>
-
-
-                    <button type="button" class="btn btn-secondary" ng-click="plotTemperature()">Temperature</button>
-
-                </div>
-            </div>
-        </div>
-        <div class="card-block " style="right:50%; transform: translate(20%, 0%);" >
-
-
-                <plotly plotly-data="graphData" plotly-layout="layout" plotly-options="options" plotly-events="plotlyEvents" ng-show="showGraph"></plotly>
-
-
-            <!-- /.col-lg-12 -->
-        </div>
-    </div>
-
-</div>
-
-
-
-<!--
 <div id="wrapper" ng-controller="homeController">
-    &lt;!&ndash; Navigation &ndash;&gt;
+    <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -98,8 +13,8 @@
 
             </div>
         </div>
-        &lt;!&ndash; /.navbar-header &ndash;&gt;
-        &lt;!&ndash; /.navbar-top-links &ndash;&gt;
+        <!-- /.navbar-header -->
+        <!-- /.navbar-top-links -->
         <ul class="nav navbar-top-links navbar-right" ng-controller="logoutController">
             <li>
                 <a ng-click='logout()'>Logout</a>
@@ -126,9 +41,9 @@
 
                 </ul>
             </div>
-            &lt;!&ndash; /.sidebar-collapse &ndash;&gt;
+            <!-- /.sidebar-collapse -->
         </div>
-        &lt;!&ndash; /.navbar-static-side &ndash;&gt;
+        <!-- /.navbar-static-side -->
     </nav>
     <div id="page-wrapper">
 
@@ -187,10 +102,10 @@
                     <plotly plotly-data="graphData" plotly-layout="layout" plotly-options="options" plotly-events="plotlyEvents" ng-show="showGraph"></plotly>
                 </div>
 
-                &lt;!&ndash; /.col-lg-12 &ndash;&gt;
+                <!-- /.col-lg-12 -->
             </div>
         </div>
-        &lt;!&ndash;<div class="row">
+        <!--<div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">{{ pageHeader }}</h1>
             </div>
@@ -216,11 +131,11 @@
                     <input type="text" class="form-control" placeholder="Cycle Count" aria-describedby="basic-addon2" ng-model="simulation.cyclecount">
                     <span class="input-group-addon" id="cycle_span"># Cycle</span>
                 </div>
-            </div>&ndash;&gt;
+            </div>-->
 
-            &lt;!&ndash; /.col-lg-12 &ndash;&gt;
+            <!-- /.col-lg-12 -->
         </div>
-        &lt;!&ndash;<div class="row" ng-show="showFormButtons" style="margin-top:20px;">
+        <!--<div class="row" ng-show="showFormButtons" style="margin-top:20px;">
             <div class="col-lg-4">
                 <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="this[btn.method](simulation)">{{ actionText }}</button>
 
@@ -231,10 +146,10 @@
             </div>
 
             &lt;!&ndash; /.col-lg-12 &ndash;&gt;
-        </div>&ndash;&gt;
+        </div>-->
 
-        &lt;!&ndash; Single button &ndash;&gt;
-        &lt;!&ndash;<div class="row" ng-show="showGraphButtons">
+        <!-- Single button -->
+        <!--<div class="row" ng-show="showGraphButtons">
             <div class="col-lg-6">
                 <div class="btn-group ">
                     <button type="button" class="btn btn-default dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -249,12 +164,11 @@
                     </ul>
                 </div>
             </div>
-        </div>&ndash;&gt;
+        </div>-->
 
 
 
     </div>
-    &lt;!&ndash; /#page-wrapper &ndash;&gt;
+    <!-- /#page-wrapper -->
 </div>
-&lt;!&ndash; /#wrapper &ndash;&gt;
--->
+<!-- /#wrapper -->
