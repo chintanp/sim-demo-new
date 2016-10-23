@@ -202,8 +202,16 @@ angular.module('myApp').controller('homeController',
                               title: 'Time (sec)'
                             },
                             yaxis: {
-                                title: 'Voltage (V)',
+                                title: 'Voltage (V)'
+                            },
+                            plot_bgcolor: "rgb(229,229,229)",
+                            margin: {
+                                autoexpand: false,
+                                l: 100,
+                                r: 20,
+                                t: 50
                             }
+
                         };
                         $scope.graphData = [{
                                 x : timeValues,
@@ -219,8 +227,17 @@ angular.module('myApp').controller('homeController',
                             title: 'Time (sec)'
                           },
                           yaxis: {
-                              title: 'Current (A)',
-                          } };
+                              title: 'Current (A)'
+
+                          },
+                          plot_bgcolor: "rgb(229,229,229)",
+                          margin: {
+                            autoexpand: false,
+                              l: 100,
+                              r: 20,
+                              t: 50
+                            }
+                        };
                         $scope.graphData = [{
                                 x : timeValues,
                                 y : currentValues
@@ -235,8 +252,17 @@ angular.module('myApp').controller('homeController',
                             title: 'Time (sec)'
                           },
                           yaxis: {
-                              title: 'Fade (Ah)',
-                          } };
+                              title: 'Fade (Ah)'
+                          },
+                          plot_bgcolor: "rgb(229,229,229)",
+
+                          margin: {
+                            autoexpand: false,
+                              l: 100,
+                              r: 20,
+                              t: 50
+                        }
+                        };
                         $scope.graphData = [{
                                 x : timeValues,
                                 y : fadeValues
@@ -251,8 +277,17 @@ angular.module('myApp').controller('homeController',
                             title: 'Time (sec)'
                           },
                           yaxis: {
-                              title: 'Temperature (K)',
-                          } };
+                              title: 'Temperature (K)'
+                          },
+                          plot_bgcolor: "rgb(229,229,229)",
+                          margin: {
+                            autoexpand: false,
+                              l: 100,
+                              r: 20,
+                              t: 50
+                        }
+                        };
+
                         $scope.graphData = [{
                                 x : timeValues,
                                 y : tempValues
@@ -267,8 +302,16 @@ angular.module('myApp').controller('homeController',
                             title: 'Time (sec)'
                           },
                           yaxis: {
-                              title: 'SoC (%)',
-                          } };
+                              title: 'SoC (%)'
+                          },
+                          plot_bgcolor: "rgb(229,229,229)",
+                          margin: {
+                            autoexpand: false,
+                              l: 100,
+                              r: 20,
+                              t: 50
+                        }
+                        };
                         $scope.graphData = [{
                                 x : timeValues,
                                 y : socValues

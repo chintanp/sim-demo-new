@@ -13,7 +13,18 @@
                     plotlyEvents: '='
                 },
                 link: function (scope, element) {
-                    var graph = element[0].children[0];
+                    var d3 = Plotly.d3;
+                    var WIDTH_IN_PERCENT_OF_PARENT = 60;
+                    var HEIGHT_IN_PERCENT_OF_PARENT = 80;
+
+                    var gd3 = d3.select("#graphDiv").style({
+                        width : WIDTH_IN_PERCENT_OF_PARENT + "%",
+                        'margin-left':(100 - WIDTH_IN_PERCENT_OF_PARENT)/2 + "%"
+                    });
+
+                    var graph = gd3.node();
+
+                    //var graph = element[0].children[0];
                     var initialized = false;
 
                     function subscribeToEvents(graph) {

@@ -1,6 +1,6 @@
 <div id="wrapper" ng-controller="homeController"  >
     <!-- Top Card - Input form panel -->
-    <div class="card text-xs-center">
+    <div class="card ">
         <div class="card-header">
             <ul class="nav nav-pills card-header-pills float-xs-left">
                 <li class="nav-item">
@@ -20,36 +20,46 @@
                 </li>
             </ul>
         </div>
-        <div class="card-block">
+        <div class="card-block ">
             <h4 class="card-title">{{ pageHeader }}</h4>
             <p class="card-text"> {{ supportingTextHeader }}</p>
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="inputCurrent">Current</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="1" aria-describedby="inputCurrent" ng-model="simulation.current">
-                        <span class="input-group-addon" id="inputCurrent">C</span>
+            <form class="form ">
+                <div class="row form-group">
+                    <div class=" form-group">
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">Current</span>
+                                <input type="text" class="form-control" placeholder="1" ng-model="simulation.current">
+                                <span class="input-group-addon">C</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class=" col-xs-12 col-sm-6 col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">Time</span>
+                                <input type="text" class="form-control" placeholder="1800" ng-model="simulation.time">
+                                <span class="input-group-addon">sec</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputTime">Time</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="1800" aria-describedby="inputTime" ng-model="simulation.time">
-                        <span class="input-group-addon" id="inputTime">sec</span>
+
+                <div class="form-group row">
+                    <div class=" col-sm-6">
+                        <button type="submit" class="btn btn-primary" ng-click="this[btn.method](simulation)">{{ actionText }}</button>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" ng-click="this[btn.method](simulation)">{{ actionText }}</button>
             </form>
         </div>
     </div>
-
 
     <!-- Graph Card -->
     <div class="card card-block text-xs-center" ng-show="showGraphCard">
         <div class="row" ng-show="showGraphButtons">
             <div class="col-lg-12">
-                <div ng-show="showResultStatus" class="alert alert-success">{{ resultStatus }}</div>
-                <div class="btn-group btn-group-lg " role="group" aria-label="...">
+                <p ng-show="showResultStatus" class="alert-success">{{ resultStatus }}</p>
+                <div class="btn-group  " role="group" aria-label="...">
 
                     <button type="button" class="btn btn-secondary" ng-click="plotVoltage()">Voltage</button>
 
@@ -68,7 +78,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-block " style="right:50%; transform: translate(20%, 0%);" >
+        <div class="card-block " style="text-align: center" id="graphDiv">
 
 
                 <plotly plotly-data="graphData" plotly-layout="layout" plotly-options="options" plotly-events="plotlyEvents" ng-show="showGraph"></plotly>
