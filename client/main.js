@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute', 'plotly']);
+var myApp = angular.module('myApp', ['ngRoute', 'plotly', 'angular-loading-bar', 'ngAnimate']);
 
 myApp.config(function ($routeProvider) {
   $routeProvider
