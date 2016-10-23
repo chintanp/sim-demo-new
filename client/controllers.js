@@ -93,6 +93,7 @@ angular.module('myApp').controller('homeController',
         $scope.showGraphButtons = false;
         $scope.showResultStatus = false;
         $scope.showGraphCard = false;
+        $scope.showPlot = false;
 
         // Dynamically update the ng-click of the button
         $scope.buttons = [{ "method" : "charge", "title" : "Charge" },
@@ -114,6 +115,7 @@ angular.module('myApp').controller('homeController',
             $scope.btn = $scope.buttons[0];
             $scope.showGraph = false;
             $scope.showGraphCard = false;
+            $scope.showPlot = false;
         };
 
         $scope.dischargeView = function () {
@@ -159,6 +161,9 @@ angular.module('myApp').controller('homeController',
             $scope.resultStatus = '';
             $scope.showGraphButtons = false;
             $scope.showGraphCard = false;
+            $scope.graphData = [];
+            $scope.showPlot = false;
+
 
             var deferred = $q.defer();
 
@@ -173,6 +178,8 @@ angular.module('myApp').controller('homeController',
                     $scope.resultStatus = "Model Solved! Choose Plot";
                     console.log(data.toString());
                     $scope.showGraphButtons = true;
+                    $scope.graphData = [];
+                    $scope.showPlot = false;
 
                     $scope.options = { showLink: false, displayLogo: false };
                     var timeValues = [];
@@ -194,6 +201,7 @@ angular.module('myApp').controller('homeController',
                     $scope.plotVoltage = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
+                        $scope.showPlot = true;
                         $scope.layout = {
                           height: 500,
                           width: 500,
