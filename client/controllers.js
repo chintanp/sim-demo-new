@@ -176,7 +176,7 @@ angular.module('myApp').controller('homeController',
                     $scope.showGraphCard = true;
                     $scope.showResultStatus = true;
                     $scope.resultStatus = "Model Solved! Choose Plot";
-                    console.log(data.toString());
+                    //console.log(data.toString());
                     $scope.showGraphButtons = true;
                     $scope.graphData = [];
                     $scope.showPlot = false;
@@ -186,144 +186,183 @@ angular.module('myApp').controller('homeController',
                     var tempValues = [];
                     var voltageValues = [];
                     var currentValues = [];
+                    $scope.data = [];
                     var fadeValues = [];
                     var socValues = [];
+                    var voltageData = [];
+                    var currentData = [];
+                    var socData = [];
+                    var fadeData = [];
+                    var temperatureData = [];
+
+                    //$scope.colors = ['#45b7cd', '#ff6384', '#ff8e72'];
 
                     data.forEach(function (stepData) {
-                        timeValues.push(stepData.timeVal);
+                       /* timeValues.push(stepData.timeVal);
                         tempValues.push(stepData.tempVal);
                         voltageValues.push(stepData.voltageVal);
                         currentValues.push(stepData.currentVal);
                         fadeValues.push(stepData.fadeVal);
-                        socValues.push(stepData.socVal);
+                        socValues.push(stepData.socVal);*/
+                        voltageData.push({x : stepData.timeVal, y : stepData.voltageVal});
+                        currentData.push({x : stepData.timeVal, y : stepData.currentVal});
+                        fadeData.push({x : stepData.timeVal, y : stepData.fadeVal});
+                        socData.push({x : stepData.timeVal, y : stepData.socVal});
+                        temperatureData.push({x : stepData.timeVal, y : stepData.tempVal});
+
                     });
 
                     $scope.plotVoltage = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
                         $scope.showPlot = true;
-                        $scope.layout = {
-                          height: 500,
-                          width: 500,
-                          title: 'Voltage',
-                          xaxis: {
-                              title: 'Time (sec)'
-                            },
-                            yaxis: {
-                                title: 'Voltage (V)'
-                            },
-                            plot_bgcolor: "rgb(229,229,229)",
-                            margin: {
-                                autoexpand: false,
-                                l: 100,
-                                r: 20,
-                                t: 50
-                            }
 
+                        $scope.data = [voltageData];
+
+                        $scope.options = {
+                            scales: {
+                                xAxes: [{
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "Time (sec)"
+                                    }
+                                }],
+                                yAxes: [{
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "Voltage (V)"
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: true,
+                                text: 'Voltage'
+                            }
                         };
-                        $scope.graphData = [{
-                                x : timeValues,
-                                y : voltageValues
-                            }];
                     };
 
                     $scope.plotCurrent = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
-                        $scope.layout = { height: 500, width: 500, title: 'Current',
-                        xaxis: {
-                            title: 'Time (sec)'
-                          },
-                          yaxis: {
-                              title: 'Current (A)'
+                        $scope.showPlot = true;
 
-                          },
-                          plot_bgcolor: "rgb(229,229,229)",
-                          margin: {
-                            autoexpand: false,
-                              l: 100,
-                              r: 20,
-                              t: 50
+
+                        $scope.data = [currentData];
+
+                        $scope.options = {
+                            scales: {
+                                xAxes: [{
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "Time (sec)"
+                                    }
+                                }],
+                                yAxes: [{
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "Current (A)"
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: true,
+                                text: 'Current'
                             }
                         };
-                        $scope.graphData = [{
-                                x : timeValues,
-                                y : currentValues
-                            }];
                     };
 
                     $scope.plotFade = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
-                        $scope.layout = { height: 500, width: 500, title: 'Fade',
-                        xaxis: {
-                            title: 'Time (sec)'
-                          },
-                          yaxis: {
-                              title: 'Fade (Ah)'
-                          },
-                          plot_bgcolor: "rgb(229,229,229)",
+                        $scope.showPlot = true;
+                        $scope.data = [fadeData];
 
-                          margin: {
-                            autoexpand: false,
-                              l: 100,
-                              r: 20,
-                              t: 50
-                        }
+                        $scope.options = {
+                            scales: {
+                                xAxes: [{
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "Time (sec)"
+                                    }
+                                }],
+                                yAxes: [{
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "Fade (Ah)"
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: true,
+                                text: 'Fade'
+                            }
                         };
-                        $scope.graphData = [{
-                                x : timeValues,
-                                y : fadeValues
-                            }];
                     };
 
                     $scope.plotTemperature = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
-                        $scope.layout = { height: 500, width: 500, title: 'Temperature',
-                        xaxis: {
-                            title: 'Time (sec)'
-                          },
-                          yaxis: {
-                              title: 'Temperature (K)'
-                          },
-                          plot_bgcolor: "rgb(229,229,229)",
-                          margin: {
-                            autoexpand: false,
-                              l: 100,
-                              r: 20,
-                              t: 50
-                        }
-                        };
+                        $scope.showPlot = true;
+                        $scope.data = [temperatureData];
 
-                        $scope.graphData = [{
-                                x : timeValues,
-                                y : tempValues
-                            }];
+                        $scope.options = {
+                            scales: {
+                                xAxes: [{
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "Time (sec)"
+                                    }
+                                }],
+                                yAxes: [{
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "Temperature (K)"
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: true,
+                                text: 'Temperature'
+                            }
+                        };
                     };
 
                     $scope.plotSoC = function () {
                         $scope.showResultStatus = true;
                         $scope.showGraph = true;
-                        $scope.layout = { height: 500, width: 500, title: 'SoC',
-                        xaxis: {
-                            title: 'Time (sec)'
-                          },
-                          yaxis: {
-                              title: 'SoC (%)'
-                          },
-                          plot_bgcolor: "rgb(229,229,229)",
-                          margin: {
-                            autoexpand: false,
-                              l: 100,
-                              r: 20,
-                              t: 50
-                        }
+                        $scope.showPlot = true;
+                        $scope.data = [socData];
+
+                        $scope.options = {
+                            scales: {
+                                xAxes: [{
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "Time (sec)"
+                                    }
+                                }],
+                                yAxes: [{
+                                    scaleLabel :{
+                                        display :true,
+                                        labelString : "SoC (%)"
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: true,
+                                text: 'SoC'
+                            }
                         };
-                        $scope.graphData = [{
-                                x : timeValues,
-                                y : socValues
-                            }];
                     };
 
                     user = true;

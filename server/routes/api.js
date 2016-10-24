@@ -58,19 +58,17 @@ router.post('/chargeSolution', function (req, res) {
     var time = req.body.time || 1800;
 
     var chargeSimulation = function (current, time) {
-        console.log("Starting exe");
-        console.log(__dirname);
-        var cmd = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/Eg-C.exe';
-        var cwd = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo';
-        var final_time_path = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/final_time.txt';
-        var bounds_path = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/bounds.txt';
-        var scaleparam_path = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/scaleparam.txt';
-        var data_path = 'D:/CP/BII/simulation-demo/sim-demo-new/server/Ipopt-exe-demo/data.txt';
+        //console.log("Starting exe");
+        //console.log(__dirname);
+	    var homePath = __dirname.slice(0, -6);
+        var cmd = homePath + 'Ipopt-exe-demo/Eg-C.exe';
+        var cwd = homePath + 'Ipopt-exe-demo';
+        var final_time_path = homePath + 'Ipopt-exe-demo/final_time.txt';
+        var bounds_path = homePath + 'Ipopt-exe-demo/bounds.txt';
+        var scaleparam_path = homePath + 'Ipopt-exe-demo/scaleparam.txt';
+        var data_path = homePath + 'Ipopt-exe-demo/data.txt';
 
-        // Updating the boudns file
-        var bound_instream = fs.createReadStream(bounds_path);
-        var bound_outstream = new stream;
-        var rl_bound = readline.createInterface(bound_instream, bound_outstream);
+        // Updating the bounds file
         var arr_bound = [];
         var bound_count = 1;
         var scale_count = 1;
@@ -84,22 +82,6 @@ router.post('/chargeSolution', function (req, res) {
         var index_soc = 9;
         var node_points = 70; // predecided in maple
 
-        /*rl_bound.on('line', function (bound_line) {
-            // process line here
-            arr_bound.push(bound_line);
-            bound_count = bound_count + 1;
-            if (bound_count == 32) {
-                arr_bound.push(bound_writeString);
-                var bound_writeText = arr_bound.join("\n");
-
-                fs.writeFile(bounds_path, bound_writeText, function (err) {
-                    if (err) return console.log(err);
-                });
-
-                rl_bound.close();
-            }
-        });
-*/
         fs.readFileSync(bounds_path).toString().split("\n").forEach(function (bound_line) {
 		      //console.log("Reading bounds file" + line);
 	        arr_bound.push(bound_line);
@@ -120,53 +102,38 @@ router.post('/chargeSolution', function (req, res) {
         // Write time to the final time file.
         fs.writeFileSync(final_time_path, time);
 
-
-        // Perform the simulation
-        //execFile("dir");
-        // execFile(cmd, { cwd : cwd }, function (error, stdout, stderr) {
-        //     if (error) {
-        //         console.log("Error running the exe" + error);
-        //         throw error;
-        //     }
-        //     console.log(stdout);
         try {
-        var output1 = execFileSync(cmd, {cwd : cwd}).toString();
-        //  var output2 = execFileSync(cmd, {cwd : cwd}).toString();
-        console.log("output of the simulation -------------------------------" + "\n\n" + output1);
-        //  console.log("output of the simulation -------------------------------" + "\n\n" + output1);
-      }
+	        var output = execFileSync(cmd, {cwd : cwd}).toString();
+	        //console.log("output of the simulation -------------------------------" + "\n\n" + output1);
+        }
 
-      catch (er) {
-        console.log("There was an error " + er.file + er.pid + er.status);
-        process.exit(1);
-      }
+        catch (er) {
+          console.log("There was an error " + er.file + er.pid + er.status);
+          process.exit(1);
+        }
             // Extract results
 
         // Extract scaleparams into an array
-        /*var scale_instream = fs.createReadStream(scaleparam_path);
-        var scale_outstream = new stream;
-        var rl_scale = readline.createInterface(scale_instream, scale_outstream);*/
+
         var arr_scale = [];
 
-	    fs.readFileSync(scaleparam_path).toString().split("\n").forEach(function (scale_line) {
-            console.log("Reading scaleparams :" +  scale_line);
+	      fs.readFileSync(scaleparam_path).toString().split("\n").forEach(function (scale_line) {
+            //console.log("Reading scaleparams :" +  scale_line);
             arr_scale.push(scale_line);
             scale_count = scale_count + 1;
             if (scale_count == 33) {
-                console.log("Read all the scale params");
+                //console.log("Read all the scale params");
 
                 // Extract data into an array
-                /*var data_instream = fs.createReadStream(data_path);
-                var data_outstream = new stream;
-                var rl_data = readline.createInterface(data_instream, data_outstream);*/
+
                 var arr_data = [];
 
-	            fs.readFileSync(data_path).toString().split("\n").forEach(function (data_line) {
-                    console.log("Reading data :" + data_line)
+	              fs.readFileSync(data_path).toString().split("\n").forEach(function (data_line) {
+                    //console.log("Reading data :" + data_line)
                     arr_data.push(data_line);
                     data_count = data_count + 1;
                     if (data_count == 32 * node_points + 1) {
-                        console.log("Read all the data");
+                        //console.log("Read all the data");
 
                         var result_data = [];
 
