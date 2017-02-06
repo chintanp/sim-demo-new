@@ -1,7 +1,7 @@
 {
   "name": "mean-auth",
   "scripts": {
-    "start": "node server/server.js"
+    "start": "pm2 start server/server.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",

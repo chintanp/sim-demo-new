@@ -61,6 +61,7 @@ router.post('/chargeSolution', function (req, res) {
         //console.log("Starting exe");
         //console.log(__dirname);
 	    var homePath = __dirname.slice(0, -6);
+		//console.log("Homepath", homePath);
         var cmd = homePath + 'Ipopt-exe-demo/Eg-C.exe';
         var cwd = homePath + 'Ipopt-exe-demo';
         var final_time_path = homePath + 'Ipopt-exe-demo/final_time.txt';
@@ -80,10 +81,10 @@ router.post('/chargeSolution', function (req, res) {
         var index_voltage = 14;
         var index_current = 31;
         var index_soc = 9;
-        var node_points = 70; // predecided in maple
+        var node_points = 50; // predecided in maple
 
         fs.readFileSync(bounds_path).toString().split("\n").forEach(function (bound_line) {
-		      //console.log("Reading bounds file" + line);
+		      //console.log("Reading bounds file" + bound_line);
 	        arr_bound.push(bound_line);
 	        bound_count = bound_count + 1;
 	        if (bound_count == 32) {
@@ -104,7 +105,7 @@ router.post('/chargeSolution', function (req, res) {
 
         try {
 	        var output = execFileSync(cmd, {cwd : cwd}).toString();
-	        //console.log("output of the simulation -------------------------------" + "\n\n" + output1);
+	        //console.log("output of the simulation -------------------------------" + "\n\n" + output);
         }
 
         catch (er) {
@@ -138,7 +139,7 @@ router.post('/chargeSolution', function (req, res) {
                         var result_data = [];
 
                         // parse the data array to get relevant results
-                        for (var i = 1; i <= 70; i++) {
+                        for (var i = 1; i <= node_points; i++) {
                             result_data.push({
                                 timeVal : i * time / node_points,
                                 tempVal : arr_scale[index_temp] * arr_data[i + node_points * (index_temp) - 1],
@@ -158,6 +159,7 @@ router.post('/chargeSolution', function (req, res) {
             });
           }
 
+          // TODO: Handle connection timeouts and other reasons that can cause server crash
     chargeSimulation(current, time);
 });
 
