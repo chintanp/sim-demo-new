@@ -220,26 +220,7 @@ angular.module('myApp').controller('homeController',
                         $scope.data = [voltageData];
 
                         $scope.options = {
-                            scales: {
-                                xAxes: [{
-                                    type: 'linear',
-                                    position: 'bottom',
-                                    scaleLabel :{
-                                        display :true,
-                                        labelString : "Time (sec)"
-                                    }
-                                }],
-                                yAxes: [{
-                                    scaleLabel :{
-                                        display :true,
-                                        labelString : "Voltage (V)"
-                                    }
-                                }]
-                            },
-                            title: {
-                                display: true,
-                                text: 'Voltage'
-                            }
+
                         };
                     };
 
@@ -366,6 +347,79 @@ angular.module('myApp').controller('homeController',
                     };
 
                     user = true;
+
+                    function plotV() {
+                        var ctV = document.getElementById("plot-voltage");
+                        var voltageChart = new Chart(ctV, {
+                            type: 'line',
+                            data: {
+                                datasets: [{
+                                    label: 'Voltage',
+                                    data: voltageData
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    xAxes: [{
+                                        type: 'linear',
+                                        position: 'bottom',
+                                        scaleLabel :{
+                                            display :true,
+                                            labelString : "Time (sec)"
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        scaleLabel :{
+                                            display :true,
+                                            labelString : "Voltage (V)"
+                                        }
+                                    }]
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Voltage'
+                                }
+                            }
+                        });
+                    }
+
+                    function plotI() {
+                        var ctI = document.getElementById("plot-current");
+                        var currentChart = new Chart(ctI, {
+                            type: 'line',
+                            data: {
+                                datasets: [{
+                                    label: 'Current',
+                                    data: currentData
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    xAxes: [{
+                                        type: 'linear',
+                                        position: 'bottom',
+                                        scaleLabel :{
+                                            display :true,
+                                            labelString : "Time (sec)"
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        scaleLabel :{
+                                            display :true,
+                                            labelString : "Current (A)"
+                                        }
+                                    }]
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Current'
+                                }
+                            }
+                        });
+                    }
+
+                    plotV()
+                    plotI()
                     deferred.resolve();
                 } else {
                     user = false;
