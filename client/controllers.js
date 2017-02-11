@@ -77,7 +77,7 @@ angular.module('myApp').controller('registerController',
 
 // Controller to take care of sending the simulation data and sending it to the server
 angular.module('myApp').controller('homeController',
-  ['$scope', '$location', '$q', '$http', 'AuthService', 
+  ['$scope', '$location', '$q', '$http', 'AuthService',
     function ($scope, $location, $q, $http, AuthService) {
         $scope.resultStatus = '';
         $scope.pageHeader = 'Charging Panel';
@@ -113,7 +113,7 @@ angular.module('myApp').controller('homeController',
             $scope.showFormButtons = true;
             $scope.actionText = "Charge";
             $scope.btn = $scope.buttons[0];
-            $scope.showGraph = false;
+            $scope.showCharts = false;
             $scope.showGraphCard = false;
             $scope.showPlot = false;
         };
@@ -126,7 +126,7 @@ angular.module('myApp').controller('homeController',
             $scope.showFormButtons = true;
             $scope.actionText = "Discharge";
             $scope.btn = $scope.buttons[1];
-            $scope.showGraph = false;
+            $scope.showCharts = false;
             $scope.showGraphCard = false;
 
         };
@@ -138,7 +138,7 @@ angular.module('myApp').controller('homeController',
             $scope.showCycle = false;
             $scope.showFormButtons = false;
             $scope.actionText = "Cycle";
-            $scope.showGraph = false;
+            $scope.showCharts = false;
             $scope.showGraphCard = false;
         };
 
@@ -148,7 +148,7 @@ angular.module('myApp').controller('homeController',
             $scope.showTime = false;
             $scope.showCycle = false;
             $scope.showFormButtons = false;
-            $scope.showGraph = false;
+            $scope.showCharts = false;
             $scope.showGraphCard = false;
         };
 
@@ -157,9 +157,9 @@ angular.module('myApp').controller('homeController',
             // send the charge current and charge time to the server and call appropriate function
             // alert("Charging");
             // create a new instance of deferred
-            $scope.showGraph = false;
+            $scope.showCharts = false;
             $scope.resultStatus = '';
-            $scope.showGraphButtons = false;
+            $scope.showCharts = false;
             $scope.showGraphCard = false;
             $scope.graphData = [];
             $scope.showPlot = false;
@@ -175,9 +175,8 @@ angular.module('myApp').controller('homeController',
                 if (status === 200) {
                     $scope.showGraphCard = true;
                     $scope.showResultStatus = true;
-                    $scope.resultStatus = "Model Solved! Choose Plot";
-                    //console.log(data.toString());
-                    $scope.showGraphButtons = true;
+                    $scope.resultStatus = "Model Solved!";
+                    $scope.showCharts = true;
                     $scope.graphData = [];
                     $scope.showPlot = false;
 
@@ -216,9 +215,12 @@ angular.module('myApp').controller('homeController',
 
 					timeChart('plot-voltage', voltageData, 'Voltage', 'Voltage (V)');
 					timeChart('plot-current', currentData, 'Current', 'Current (A)');
-					
-					fadeGauge(fadeData.slice(-1)[0].y);
-					
+
+                    setTimeout(function () {
+                        /* setTimeout required for chart size to render correctly */
+                        fadeGauge(fadeData.slice(-1)[0].y);
+                    }, 0);
+
                     deferred.resolve();
                 } else {
                     user = false;
