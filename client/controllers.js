@@ -218,7 +218,10 @@ angular.module('myApp').controller('homeController',
 
                     setTimeout(function () {
                         /* setTimeout required for chart size to render correctly */
-                        fadeGauge(fadeData.slice(-1)[0].y);
+                        var capacityLoss = 100*fadeData.slice(-1)[0].y/18.1
+                        var rul = 80/capacityLoss
+
+                        fadeGauge(capacityLoss);
                     }, 0);
 
                     deferred.resolve();

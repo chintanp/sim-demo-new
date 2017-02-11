@@ -23,31 +23,39 @@
         <div class="card-block ">
             <h4 class="card-title">{{ pageHeader }}</h4>
             <p class="card-text"> {{ supportingTextHeader }}</p>
-            <form class="form ">
-                <div class="row form-group">
-                    <div class=" form-group">
-                        <div class="col-xs-12 col-sm-6 col-md-4">
+            <form class="form form-inline">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class=" form-group">
                             <div class="input-group">
-                                <span class="input-group-addon">Current</span>
+                                <span class="input-group-addon">Max. Current</span>
                                 <input type="text" class="form-control" placeholder="1" ng-model="simulation.current">
                                 <span class="input-group-addon">C</span>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group ">
-                        <div class=" col-xs-12 col-sm-6 col-md-4">
+                    <div class="col-lg-3">
+                        <div class="form-group">
                             <div class="input-group">
-                                <span class="input-group-addon">Time</span>
+                                <span class="input-group-addon">Charging Time</span>
                                 <input type="text" class="form-control" placeholder="1800" ng-model="simulation.time">
                                 <span class="input-group-addon">sec</span>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class=" col-sm-6">
-                        <button type="submit" class="btn btn-success" ng-click="this[btn.method](simulation)">{{ actionText }}</button>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">Battery Capacity</span>
+                                <input type="text" class="form-control" placeholder="100%" ng-model="simulation.capacity">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-success" ng-click="this[btn.method](simulation)">{{ actionText }}</button>
+                        </div>
                     </div>
                 </div>
             </form>

@@ -62,10 +62,16 @@ function timeChart(id, data, title, ylabel) {
 }
 
 
-
+var gauge;
 function fadeGauge(fade){
 
-	var chart = c3.generate({
+    // clear chart if it already exists
+    if(gauge != null) {
+        gauge.destroy();
+    }
+
+    // create new gauge
+	gauge = c3.generate({
 		bindto: '#gauge',
 		data: {
 			columns: [
@@ -81,11 +87,11 @@ function fadeGauge(fade){
 				format: function(value, ratio) {
 					return value.toFixed(3);
 				},
-				show: false // to turn off the min/max labels.
+				show: true // to turn off the min/max labels.
 			},
-		min: 0, // 0 is default, //can handle negative min e.g. vacuum / voltage / current flow / rate of change
-		max: .01, // 100 is default
-		units: '',
+		min: 0, // 0 is default
+		max: .05, // 100 is default
+		units: ' %',
 		// width: 20 // for adjusting arc thickness
 		},
 		color: {
@@ -93,7 +99,7 @@ function fadeGauge(fade){
 			threshold: {
 				unit: 'value', // percentage is default
 				max: .01, // 100 is default
-				values: [.003, .006, .009, .01]
+				values: [.015, .03, .045, .05]
 			}
 		},
 		// size: {
@@ -107,7 +113,7 @@ function fadeGauge(fade){
 		}
 	});
 
-	chart.load({
+	gauge.load({
 		columns: [['data', fade]]
 	});
 }
