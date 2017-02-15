@@ -68,22 +68,26 @@
             <div class="col-lg-12">
                 <p ng-show="showResultStatus" class="alert-success">{{ resultStatus }}</p>
                 <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <canvas id="plot-voltage" width=100% height=30vh></canvas>
+                    <div class="row" id="row-top">
+                        <div class="col-lg-6" id="voltage">
+                            <canvas id="plot-voltage"></canvas>
                         </div>
                         <div class="col-lg-6">
                             <div id="gauge" style="margins: auto"></div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <canvas id="plot-current" width=100% height=30vh></canvas>
+                    <div class="row" id="row-bottom">
+                        <div class="col-lg-6" id="current">
+                            <canvas id="plot-current"></canvas>
+                        </div>
+                        <div class="col-lg-6" id="remaining-life">
+                            <span>
+                                <h3>{{ remainingLife }} cycles</h3>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>

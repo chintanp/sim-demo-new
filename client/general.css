@@ -1,0 +1,23 @@
+#row-top ,
+#row-bottom {
+    height: 20vh;
+}
+
+div#voltage,
+div#current,
+canvas#plot-voltage,
+canvas#plot-current {
+    height: 20vh;
+}
+
+div#remaining-life {
+    height: 20vh;
+    line-height: 20vh;
+    text-align: center;
+}
+
+#remaining-life > span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}

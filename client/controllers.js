@@ -216,12 +216,12 @@ angular.module('myApp').controller('homeController',
 					timeChart('plot-voltage', voltageData, 'Voltage', 'Voltage (V)');
 					timeChart('plot-current', currentData, 'Current', 'Current (A)');
 
+                    $scope.capacityLoss = 100*fadeData.slice(-1)[0].y/18.1;
+                    $scope.remainingLife = Math.round(80/$scope.capacityLoss);
+
                     setTimeout(function () {
                         /* setTimeout required for chart size to render correctly */
-                        var capacityLoss = 100*fadeData.slice(-1)[0].y/18.1
-                        var rul = 80/capacityLoss
-
-                        fadeGauge(capacityLoss);
+                        fadeGauge($scope.capacityLoss);
                     }, 0);
 
                     deferred.resolve();

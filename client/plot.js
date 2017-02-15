@@ -52,7 +52,9 @@ function timeChart(id, data, title, ylabel) {
 			title: {
 				display: true,
 				text: title
-			}
+			},
+            responsive: true,
+            maintainAspectRatio: false
 		}
 	});
     charts.push({
