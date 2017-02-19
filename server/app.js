@@ -16,6 +16,8 @@ mongoose.connect('mongodb://localhost/mean-auth');
 
 // user schema/model
 var User = require('./models/user.js');
+// Results schema/model
+var Result = require('./models/result.js');
 
 // create instance of express
 var app = express();

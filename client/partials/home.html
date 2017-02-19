@@ -6,12 +6,12 @@
                 <li class="nav-item">
                     <a class="nav-link active" ng-click="chargeView()">Charging</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Discharging</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Cycle</a>
-                </li>
+                <!--<li class="nav-item">-->
+                <!--    <a class="nav-link disabled" href="#">Discharging</a>-->
+                <!--</li>-->
+                <!--<li class="nav-item">-->
+                <!--    <a class="nav-link disabled" href="#">Cycle</a>-->
+                <!--</li>-->
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#">Parameters</a>
                 </li>
@@ -25,6 +25,15 @@
             <p class="card-text"> {{ supportingTextHeader }}</p>
             <form class="form form-inline">
                 <div class="row">
+                    <div class="col-lg-3">
+                        <div class=" form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">Name</span>
+                                <input type="text" class="form-control" placeholder="1C1800" ng-model="simulation.current">
+                                <!--<span class="input-group-addon">C</span>-->
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-lg-3">
                         <div class=" form-group">
                             <div class="input-group">
@@ -43,15 +52,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">Battery Capacity</span>
-                                <input type="text" class="form-control" placeholder="100%" ng-model="simulation.capacity">
-                                <span class="input-group-addon">%</span>
-                            </div>
-                        </div>
-                    </div>
+                    <!--<div class="col-lg-3">-->
+                    <!--    <div class="form-group">-->
+                    <!--        <div class="input-group">-->
+                    <!--            <span class="input-group-addon">Battery Capacity</span>-->
+                    <!--            <input type="text" class="form-control" placeholder="100%" ng-model="simulation.capacity">-->
+                    <!--            <span class="input-group-addon">%</span>-->
+                    <!--        </div>-->
+                    <!--    </div>-->
+                    <!--</div>-->
                     <div class="col-lg-3">
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-success" ng-click="this[btn.method](simulation)">{{ actionText }}</button>

@@ -9,6 +9,10 @@ var readline = require('readline');
 var stream = require('stream');
 
 var User = require('../models/user.js');
+// Results schema/model
+var Result = require('../models/result.js');
+
+var username = '';
 
 router.post('/register', function(req, res) {
   User.register(new User({ username: req.body.username }),
@@ -45,6 +49,7 @@ router.post('/login', function(req, res, next) {
       res.status(200).json({
         status: 'Login successful!'
       });
+      username = user;
     });
   })(req, res, next);
 });
@@ -56,7 +61,7 @@ router.post('/chargeSolution', function (req, res) {
     //  Pass the current and time values to the exe and perform charge
     var current = req.body.current || 1;
     var time = req.body.time || 1800;
-
+    
     var chargeSimulation = function (current, time) {
         //console.log("Starting exe");
         //console.log(__dirname);
@@ -150,8 +155,22 @@ router.post('/chargeSolution', function (req, res) {
                             });
                         }
 
-                        // send the data to the client
-                        res.status(200).json(result_data);
+                          // send the data to the client
+                          res.status(200).json(result_data);
+                          
+                          var result1 = new Result({
+                            username : username.username, 
+                            current : current, 
+                            time : time, 
+                            data : result_data
+                          });
+                          
+                          result1.save(function(err) {
+                            if (err) {
+                              console.log("Error in saving to database");
+                              //return handleError(err);
+                            }
+                          });
 
                         }
                     });
