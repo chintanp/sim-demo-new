@@ -1,4 +1,4 @@
-<div id="wrapper" ng-controller="homeController"  >
+<div id="wrapper" ng-controller="homeController">
     <!-- Top Card - Input form panel -->
     <div class="card ">
         <div class="card-header">
@@ -72,31 +72,59 @@
     </div>
 
     <!-- Graph Card -->
-    <div class="card card-block text-xs-center card-outline-primary " ng-show="showGraphCard">
+    <div class="card card-block text-xs-center card-outline-primary " ng-show="showGraphCard" id="graphCard">
         <div class="row" ng-show="showCharts">
             <div class="col-lg-12">
                 <p ng-show="showResultStatus" class="alert-success">{{ resultStatus }}</p>
-                <div class="container">
-                    <div class="row" id="row-top">
-                        <div class="col-lg-6" id="voltage">
-                            <canvas id="plot-voltage"></canvas>
-                        </div>
-                        <div class="col-lg-6">
-                            <div id="gauge" style="margins: auto"></div>
-                        </div>
-                    </div>
-                    <div class="row" id="row-bottom">
-                        <div class="col-lg-6" id="current">
-                            <canvas id="plot-current"></canvas>
-                        </div>
-                        <div class="col-lg-6" id="remaining-life">
-                            <span>
-                                <h3>{{ remainingLife }} cycles</h3>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <!--<div class="container">-->
+                <!--    <div class="row" id="row-top">-->
+                <!--        <div class="col-lg-6" id="voltage">-->
+                <!--            <canvas id="plot-voltage"></canvas>-->
+                <!--        </div>-->
+                <!--        <div class="col-lg-6">-->
+                <!--            <div id="gauge" style="margins: auto"></div>-->
+                <!--        </div>-->
+                <!--    </div>-->
+                <!--    <div class="row" id="row-bottom">-->
+                <!--        <div class="col-lg-6" id="current">-->
+                <!--            <canvas id="plot-current"></canvas>-->
+                <!--        </div>-->
+                <!--        <div class="col-lg-6" id="remaining-life">-->
+                <!--            <span>-->
+                <!--                <h3>{{ remainingLife }} cycles</h3>-->
+                <!--            </span>-->
+                <!--        </div>-->
+                <!--    </div>-->
+                <!--</div>-->
+
+                <br>
             </div>
+
+            <!--<canvas class="chart chart-line" chart-data="voltage_data" chart-options="voltage_options" id="voltage_plot"></canvas>-->
+            <!--<canvas class="chart chart-line" chart-data="current_data" chart-options="current_options" id="current_plot"></canvas>-->
         </div>
+        <div class="row" ng-show="showCharts" >
+            <div class="col-lg-6">
+                <canvas class="chart chart-line" chart-data="voltage_data" chart-options="voltage_options" id="voltage_plot"></canvas>
+            </div>
+            <div class="col-lg-6" style="position: relative">
+                <div id="gauge" style="margins: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, 0%);"></div>
+            </div>
+            <br>
+
+        </div>
+
+        <div class="row" ng-show="showCharts">
+            <div class="col-lg-6">
+                <canvas class="chart chart-line" chart-data="current_data" chart-options="current_options" id="current_plot"></canvas>
+            </div>
+            <div class="col-lg-6" id="remaining-life">
+                <span>
+                    <h3>{{ remainingLife }} cycles</h3>
+                </span>
+            </div>
+
+        </div>
+
     </div>
 </div>

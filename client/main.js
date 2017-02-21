@@ -1,5 +1,6 @@
 
-var myApp = angular.module('myApp', ['ngRoute', 'plotly', 'angular-loading-bar', 'ngAnimate', 'chart.js']);
+var myApp = angular.module('myApp', ['ngRoute', 'angular-loading-bar', 
+                                      'ngAnimate', 'chart.js', 'gridshore.c3js.chart']);
 
 myApp.config(function ($routeProvider) {
   $routeProvider

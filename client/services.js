@@ -1,3 +1,5 @@
+// Handles login, logout, register etc. 
+
 angular.module('myApp').factory('AuthService',
   ['$q', '$timeout', '$http',
   function ($q, $timeout, $http) {
