@@ -92,8 +92,8 @@ function fadeGauge(fade){
 				show: true // to turn off the min/max labels.
 			},
 		min: 0, // 0 is default
-		max: .05, // 100 is default
-		units: ' %',
+		max: 0.75, // try to get it be red sometimes
+		units: ' $/kWh',
 		// width: 20 // for adjusting arc thickness
 		},
 		color: {
@@ -101,7 +101,7 @@ function fadeGauge(fade){
 			threshold: {
 				unit: 'value', // percentage is default
 				max: .01, // 100 is default
-				values: [.015, .03, .045, .05]
+				values: [.225, .45, .675, .75] // 30, 60, 90, 100% of max
 			}
 		},
 		// size: {
@@ -116,6 +116,6 @@ function fadeGauge(fade){
 	});
 
 	gauge.load({
-		columns: [['data', fade]]
+		columns: ['data', fade]
 	});
 }

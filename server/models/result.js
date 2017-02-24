@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 
 var Result = new Schema({
   username: String,
+  name: String,
   current: { type: Number }, 
   time : { type : Number }, 
   data : []

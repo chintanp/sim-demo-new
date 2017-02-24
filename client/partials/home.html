@@ -6,12 +6,6 @@
                 <li class="nav-item">
                     <a class="nav-link active" ng-click="chargeView()">Charging</a>
                 </li>
-                <!--<li class="nav-item">-->
-                <!--    <a class="nav-link disabled" href="#">Discharging</a>-->
-                <!--</li>-->
-                <!--<li class="nav-item">-->
-                <!--    <a class="nav-link disabled" href="#">Cycle</a>-->
-                <!--</li>-->
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#">Parameters</a>
                 </li>
@@ -25,24 +19,24 @@
             <p class="card-text"> {{ supportingTextHeader }}</p>
             <form class="form form-inline">
                 <div class="row">
-                    <div class="col-lg-3">
-                        <div class=" form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">Name</span>
-                                <input type="text" class="form-control" placeholder="1C1800" ng-model="simulation.current">
-                                <!--<span class="input-group-addon">C</span>-->
-                            </div>
-                        </div>
-                    </div>
+                    <!--<div class="col-lg-3">-->
+                        <!--<div class=" form-group">-->
+                            <!--<div class="input-group">-->
+                                <!--<span class="input-group-addon">Name</span>-->
+                                <!--<input type="text" class="form-control" placeholder="2C1800" ng-model="simulation.name">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="col-lg-3">
                         <div class=" form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">Max. Current</span>
-                                <input type="text" class="form-control" placeholder="1" ng-model="simulation.current">
+                                <input type="text" class="form-control" placeholder="2" ng-model="simulation.current">
                                 <span class="input-group-addon">C</span>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-lg-3">
                         <div class="form-group">
                             <div class="input-group">
@@ -52,18 +46,14 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="col-lg-3">-->
-                    <!--    <div class="form-group">-->
-                    <!--        <div class="input-group">-->
-                    <!--            <span class="input-group-addon">Battery Capacity</span>-->
-                    <!--            <input type="text" class="form-control" placeholder="100%" ng-model="simulation.capacity">-->
-                    <!--            <span class="input-group-addon">%</span>-->
-                    <!--        </div>-->
-                    <!--    </div>-->
-                    <!--</div>-->
-                    <div class="col-lg-3">
+                    <div class="col-lg-1">
+
+                    </div>
+                    <div class="col-lg-4">
                         <div class="form-group text-center">
-                            <button type="submit" class="btn btn-success" ng-click="this[btn.method](simulation)">{{ actionText }}</button>
+                            <button type="submit" class="btn btn-success" ng-click="baseCharge(simulation)">Basecase</button>
+                            <button type="submit" class="btn btn-warning" ng-click="optimalCharge(simulation)">Optimal</button>
+                            <button type="submit" class="btn btn-secondary" ng-click="resetGraph()">Reset</button>
                         </div>
                     </div>
                 </div>
@@ -72,55 +62,32 @@
     </div>
 
     <!-- Graph Card -->
-    <div class="card card-block text-xs-center card-outline-primary " ng-show="showGraphCard" id="graphCard">
+    <div class="card card-block text-xs-center card-outline-primary " ng-show="showGraphCard">
         <div class="row" ng-show="showCharts">
             <div class="col-lg-12">
                 <p ng-show="showResultStatus" class="alert-success">{{ resultStatus }}</p>
-                <!--<div class="container">-->
-                <!--    <div class="row" id="row-top">-->
-                <!--        <div class="col-lg-6" id="voltage">-->
-                <!--            <canvas id="plot-voltage"></canvas>-->
-                <!--        </div>-->
-                <!--        <div class="col-lg-6">-->
-                <!--            <div id="gauge" style="margins: auto"></div>-->
-                <!--        </div>-->
-                <!--    </div>-->
-                <!--    <div class="row" id="row-bottom">-->
-                <!--        <div class="col-lg-6" id="current">-->
-                <!--            <canvas id="plot-current"></canvas>-->
-                <!--        </div>-->
-                <!--        <div class="col-lg-6" id="remaining-life">-->
-                <!--            <span>-->
-                <!--                <h3>{{ remainingLife }} cycles</h3>-->
-                <!--            </span>-->
-                <!--        </div>-->
-                <!--    </div>-->
-                <!--</div>-->
-
                 <br>
             </div>
-
-            <!--<canvas class="chart chart-line" chart-data="voltage_data" chart-options="voltage_options" id="voltage_plot"></canvas>-->
-            <!--<canvas class="chart chart-line" chart-data="current_data" chart-options="current_options" id="current_plot"></canvas>-->
         </div>
-        <div class="row" ng-show="showCharts" >
+
+        <!-- First Row - Voltage and Fade -->
+        <div class="row" ng-show="showCharts">
             <div class="col-lg-6">
-                <canvas class="chart chart-line" chart-data="voltage_data" chart-options="voltage_options" id="voltage_plot"></canvas>
+                <canvas class="chart chart-line" chart-data="current_data" chart-options="current_options" id="current_plot"></canvas>
             </div>
             <div class="col-lg-6" style="position: relative">
                 <div id="gauge" style="margins: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, 0%);"></div>
             </div>
             <br>
-
         </div>
-
+        <!-- Second Row - Current and cycle life -->
         <div class="row" ng-show="showCharts">
             <div class="col-lg-6">
-                <canvas class="chart chart-line" chart-data="current_data" chart-options="current_options" id="current_plot"></canvas>
+                <canvas class="chart chart-line" chart-data="voltage_data" chart-options="voltage_options" id="voltage_plot"></canvas>
             </div>
             <div class="col-lg-6" id="remaining-life">
                 <span>
-                    <h3>{{ remainingLife }} cycles</h3>
+                    <h3>{{ remainingLife }} % extra charge stored per cycle</h3>
                 </span>
             </div>
 

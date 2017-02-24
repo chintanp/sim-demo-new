@@ -74,145 +74,98 @@ angular.module('myApp').controller('registerController', ['$scope', '$location',
     }
 ]);
 
-
 // Controller to take care of sending the simulation data and sending it to the server
 angular.module('myApp').controller('homeController', ['$scope', '$location',
     '$q', '$http', '$document', '$anchorScroll','AuthService',
     function($scope, $location, $q, $http, $document, $anchorScroll, AuthService) {
         $scope.resultStatus = '';
         $scope.pageHeader = 'Charging Panel';
-        $scope.supportingTextHeader = 'Enter values and click button charge to simulate charging';
+        $scope.supportingTextHeader = 'Enter current and time to run simulation for base case';
         $scope.showCurrent = false;
         $scope.showTime = false;
         $scope.showCycle = false;
         $scope.showFormButtons = false;
         $scope.simulation = "";
-        $scope.simulation.current = "";
-        $scope.simulation.time = "";
+        $scope.simulation.current = 2;
+        $scope.simulation.time = 1800;
+        $scope.simulation.name = $scope.simulation.current +
+                                    'C' + $scope.simulation.time;
         $scope.showGraph = false;
         $scope.showGraphButtons = false;
         $scope.showResultStatus = false;
         $scope.showGraphCard = false;
         $scope.showPlot = false;
 
-        // Dynamically update the ng-click of the button
-        $scope.buttons = [{
-            "method": "charge",
-            "title": "Charge"
-        }, {
-            "method": "discharge",
-            "title": "Discharge"
-        }, {
-            "method": "cycle",
-            "title": "Cycle"
-        }];
-        $scope.actionText = "Charge";
-        $scope.btn = $scope.buttons[0];
+        $scope.voltage_data = [];
+        $scope.current_data = [];
+        $scope.capacityLoss = [];
+        $scope.remainingLife = [];
+
+        var timeValues = [];
+        var tempValues = [];
+        var voltageValues = [];
+        var currentValues = [];
+        $scope.data = [];
+        var fadeValues = [];
+        var socValues = [];
+        var voltageData = [];
+        var currentData = [];
+        var socData = [];
+        var fadeData = [];
+        var temperatureData = [];
+
         $scope.graphData = [];
 
-
-
-        $scope.chargeView = function() {
-            $scope.pageHeader = 'Charging Panel';
-            $scope.showCurrent = true;
-            $scope.showTime = true;
-            $scope.showCycle = false;
-            $scope.showFormButtons = true;
-            $scope.actionText = "Charge";
-            $scope.btn = $scope.buttons[0];
-            $scope.showCharts = false;
-            $scope.showGraphCard = false;
-            $scope.showPlot = false;
-        };
-
-        $scope.dischargeView = function() {
-            $scope.pageHeader = 'Discharging Panel';
-            $scope.showCurrent = true;
-            $scope.showTime = false;
-            $scope.showCycle = false;
-            $scope.showFormButtons = true;
-            $scope.actionText = "Discharge";
-            $scope.btn = $scope.buttons[1];
-            $scope.showCharts = false;
-            $scope.showGraphCard = false;
-
-        };
-
-        $scope.cycleView = function() {
-            $scope.pageHeader = 'Coming Soon';
-            $scope.showCurrent = false;
-            $scope.showTime = false;
-            $scope.showCycle = false;
-            $scope.showFormButtons = false;
-            $scope.actionText = "Cycle";
-            $scope.showCharts = false;
-            $scope.showGraphCard = false;
-        };
-
-        $scope.parametersView = function() {
-            $scope.pageHeader = 'Coming Soon';
-            $scope.showCurrent = false;
-            $scope.showTime = false;
-            $scope.showCycle = false;
-            $scope.showFormButtons = false;
-            $scope.showCharts = false;
-            $scope.showGraphCard = false;
-        };
-
-
-        $scope.charge = function(simulation) {
-            // send the charge current and charge time to the server and call appropriate function
-            // alert("Charging");
-            // create a new instance of deferred
-            $scope.showCharts = false;
-            $scope.resultStatus = '';
-            $scope.showCharts = false;
-            $scope.showGraphCard = false;
-            $scope.graphData = [];
-            $scope.showPlot = false;
-
+        $scope.baseCharge = function(simulation) {
 
             var deferred = $q.defer();
 
+	        $scope.showGraphCard = false;
+	        $scope.showResultStatus = false;
+	        $scope.resultStatus = "";
+	        $scope.showCharts = false;
+	        $scope.graphData = [];
+	        $scope.showPlot = false;
+	        $scope.voltage_data = [];
+	        $scope.current_data = [];
+
             // send a post request to the server
-            $http.post('/user/chargeSolution', {
+            $http.post('/user/baseCharge', {
                     current: simulation.current,
-                    time: simulation.time
+                    time: simulation.time,
+                    name: simulation.name
                 })
                 // handle success
-                .success(function(data, status) {
+                .success(function(result, status) {
                     if (status === 200) {
+                       // If success, i.e. model solved, then show graph
                         $scope.showGraphCard = true;
                         $scope.showResultStatus = true;
-                        $scope.resultStatus = "Model Solved!";
+                        $scope.resultStatus = "Plotting Base Case";
                         $scope.showCharts = true;
                         $scope.graphData = [];
                         $scope.showPlot = false;
-                        
+
+
+                        voltageData = [];
+                        currentData = [];
+                        socData = [];
+                        fadeData = [];
+                        temperatureData = [];
+
+                        var raw_data = result.result_data;
+                        $scope.basechargeStored = result.charge_stored;
+
                         // Scroll to the graph card
-                        $location.hash('graphCard');
-                        $anchorScroll();
-                        
+                        //$location.hash('graphCard');
+                        //$anchorScroll();
+
                         $scope.options = {
                             showLink: false,
                             displayLogo: false
                         };
-                        var timeValues = [];
-                        var tempValues = [];
-                        var voltageValues = [];
-                        var currentValues = [];
-                        $scope.data = [];
-                        var fadeValues = [];
-                        var socValues = [];
-                        var voltageData = [];
-                        var currentData = [];
-                        var socData = [];
-                        var fadeData = [];
-                        var temperatureData = [];
-
-                        //$scope.colors = ['#45b7cd', '#ff6384', '#ff8e72'];
-
-                        data.forEach(function(stepData) {
+                        // Parse 'data' recd from server to get voltage, current etc.
+                        raw_data.forEach(function(stepData) {
 
                             voltageData.push({
                                 x: stepData.timeVal,
@@ -238,7 +191,6 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
                         });
 
                         // Plotting code here
-
                         $scope.voltage_options = {
                             scales: {
                                 xAxes: [{
@@ -259,7 +211,8 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
                             title: {
                                 display: true,
                                 text: 'Voltage'
-                            }
+                            },
+                            scaleShowGridLines: false
                         };
 
                         $scope.current_options = {
@@ -285,16 +238,9 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
                             }
                         };
 
-                        $scope.voltage_data = [voltageData];
-                        $scope.current_data = [currentData];
-
-                        $scope.capacityLoss = 100 * fadeData.slice(-1)[0].y / 18.1;
-                        $scope.remainingLife = Math.round(80/$scope.capacityLoss);
-
-                        setTimeout(function() {
-                            /* setTimeout required for chart size to render correctly */
-                            fadeGauge($scope.capacityLoss);
-                        }, 5);
+                        // Add elements to the plotting dataset arrays, this adds lines to graphs
+                        $scope.voltage_data.push(voltageData);
+                        $scope.current_data.push(currentData);
 
                         user = true;
 
@@ -315,5 +261,153 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
             return deferred.promise;
         };
 
+        $scope.optimalCharge = function(simulation) {
+
+            var deferred = $q.defer();
+
+            // send a post request to the server
+            $http.post('/user/optimalCharge', {
+                    current: simulation.current,
+                    time: simulation.time,
+                    name: simulation.name
+                })
+                // handle success
+                .success(function(result, status) {
+                    if (status === 200) {
+                       // If success, i.e. model solved, then show graph
+                        $scope.showGraphCard = true;
+                        $scope.showResultStatus = true;
+                        $scope.resultStatus = "Plotting Base Case and Optimal Case";
+                        $scope.showCharts = true;
+                        $scope.graphData = [];
+                        $scope.showPlot = false;
+
+                        voltageData = [];
+                        currentData = [];
+                        socData = [];
+                        fadeData = [];
+                        temperatureData = [];
+
+	                    var raw_data = result.result_data;
+	                    $scope.optimalchargeStored = result.charge_stored;
+
+                        // Scroll to the graph card
+                        // $location.hash('graphCard');
+                        // $anchorScroll();
+
+                        $scope.options = {
+                            showLink: false,
+                            displayLogo: false
+                        };
+                        // Parse 'data' recd from server to get voltage, current etc.
+                        raw_data.forEach(function(stepData) {
+
+                            voltageData.push({
+                                x: stepData.timeVal,
+                                y: stepData.voltageVal
+                            });
+                            currentData.push({
+                                x: stepData.timeVal,
+                                y: stepData.currentVal
+                            });
+                            fadeData.push({
+                                x: stepData.timeVal,
+                                y: stepData.fadeVal
+                            });
+                            socData.push({
+                                x: stepData.timeVal,
+                                y: stepData.socVal
+                            });
+                            temperatureData.push({
+                                x: stepData.timeVal,
+                                y: stepData.tempVal
+                            });
+
+                        });
+
+                        // Plotting code here
+                        $scope.voltage_options = {
+                            scales: {
+                                xAxes: [{
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: "Time (sec)"
+                                    }
+                                }],
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: "Voltage (V)"
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: true,
+                                text: 'Voltage'
+                            },
+                            scaleShowGridLines: false
+                        };
+
+                        $scope.current_options = {
+                            scales: {
+                                xAxes: [{
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: "Time (sec)"
+                                    }
+                                }],
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: "Current (A)"
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: true,
+                                text: 'Current'
+                            }
+                        };
+
+                        // Add elements to the plotting dataset arrays, this adds lines to graphs
+                        $scope.voltage_data.push(voltageData);
+                        $scope.current_data.push(currentData);
+
+                        $scope.remainingLife = ($scope.optimalchargeStored - $scope.basechargeStored)*100/18.1;
+
+	                    user = true;
+
+                        deferred.resolve();
+                    }
+                    else {
+                        user = false;
+                        deferred.reject();
+                    }
+                })
+                // handle error
+                .error(function(data) {
+                    user = false;
+                    deferred.reject();
+                });
+
+            // return promise object
+            return deferred.promise;
+        }
+
+        // Clear all the graphs and area
+        $scope.resetGraph = function() {
+            $scope.resultStatus = "";
+            $scope.showCharts = false;
+            $scope.graphData = [];
+            $scope.showPlot = false;
+            $scope.showGraphCard = false;
+            $scope.voltage_data = [];
+            $scope.current_data = [];
+
+        }
     }
 ]);
