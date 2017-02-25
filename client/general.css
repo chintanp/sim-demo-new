@@ -21,3 +21,16 @@ div#remaining-life {
     vertical-align: middle;
     line-height: normal;
 }
+
+.navbar-brand > img {
+    height: 50px;
+    width: auto;
+}
+
+@media only screen and (min-width: 576px) {
+    .navbar-brand > img {
+        max-width: 33%;
+        width: auto;
+        height: auto;
+    }
+}

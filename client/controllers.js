@@ -80,6 +80,7 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
     function($scope, $location, $q, $http, $document, $anchorScroll, AuthService) {
         $scope.resultStatus = '';
         $scope.pageHeader = 'Charging Panel';
+        $scope.logo = './dist/img/bii-logo.png'
         $scope.supportingTextHeader = 'Enter current and time to run simulation for base case';
         $scope.showCurrent = false;
         $scope.showTime = false;
