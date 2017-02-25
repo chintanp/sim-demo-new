@@ -1,93 +1,96 @@
 <div id="wrapper" ng-controller="homeController">
-    <nav class="navbar navbar-light bg-faded">
-        <div class="navbar-brand">
-            <img class="align-middle mr-auto" src="{{ logo }}" alt="Bii Logo" />
-        </div>
-    </nav>
-    <!-- Top Card - Input form panel -->
-    <div class="card ">
-        <div class="card-block ">
-            <h4 class="card-title">{{ pageHeader }}</h4>
-            <p class="card-text"> {{ supportingTextHeader }}</p>
-            <form class="form form-inline">
-                <div class="row">
-                    <!--<div class="col-lg-3">-->
-                        <!--<div class=" form-group">-->
-                            <!--<div class="input-group">-->
-                                <!--<span class="input-group-addon">Name</span>-->
-                                <!--<input type="text" class="form-control" placeholder="2C1800" ng-model="simulation.name">-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <div class="col-lg-3">
-                        <div class=" form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">Max. Current</span>
-                                <input type="text" class="form-control" placeholder="2" ng-model="simulation.current">
-                                <span class="input-group-addon">C</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon">Charging Time</span>
-                                <input type="text" class="form-control" placeholder="1800" ng-model="simulation.time">
-                                <span class="input-group-addon">sec</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-1">
-
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group text-center">
-                            <button type="submit" class="btn btn-success" ng-click="baseCharge(simulation)">Basecase</button>
-                            <button type="submit" class="btn btn-warning" ng-click="optimalCharge(simulation)">Optimal</button>
-                            <button type="submit" class="btn btn-secondary" ng-click="resetGraph()">Reset</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Graph Card -->
-    <div class="card card-block text-xs-center card-outline-primary " ng-show="showGraphCard">
-        <div class="row" ng-show="showCharts">
-            <div class="col-lg-12">
-                <p ng-show="showResultStatus" class="alert-success">{{ resultStatus }}</p>
-                <br>
-            </div>
-        </div>
-
-        <!-- First Row - Voltage and Fade -->
-        <div class="row" ng-show="showCharts">
-            <div class="col-lg-6">
-                <canvas class="chart chart-line" chart-data="current_data" chart-options="current_options" id="current_plot"></canvas>
-            </div>
-            <div class="col-lg-6">
-                <canvas class="chart chart-line" chart-data="voltage_data" chart-options="voltage_options" id="voltage_plot"></canvas>
-            </div>
-            <br>
-        </div>
-        <!-- Second Row - Current and cycle life -->
-        <div class="row" ng-show="showOptimal">
-            <br><br>
-
-            <p class="alert-info">{{ remainingLife }} % extra charge/cycle</p>
-            <div class="col-lg-4">
-                <i class="fa fa-mobile fa-5x" aria-hidden="true"></i>
-            </div>
-            <div class="col-lg-4">
-                <i class="fa fa-car fa-5x" aria-hidden="true"></i>
-            </div>
-            <div class="col-lg-4">
-                <i class="fa fa-building-o fa-5x" aria-hidden="true"></i>
-            </div>
-
-        </div>
-
-    </div>
+	<nav class="navbar navbar-light bg-faded">
+		<div class="navbar-brand">
+			<img class="align-middle mr-auto" src="{{ logo }}" alt="Bii Logo"/>
+		</div>
+	</nav>
+	<!-- Top Card - Input form panel -->
+	<div class="card ">
+		<div class="card-block ">
+			<h4 class="card-title">{{ pageHeader }}</h4>
+			<p class="card-text"> {{ supportingTextHeader }}</p>
+			<form class="form form-inline">
+				<div class="row">
+					<!--<div class="col-lg-3">-->
+					<!--<div class=" form-group">-->
+					<!--<div class="input-group">-->
+					<!--<span class="input-group-addon">Name</span>-->
+					<!--<input type="text" class="form-control" placeholder="2C1800" ng-model="simulation.name">-->
+					<!--</div>-->
+					<!--</div>-->
+					<!--</div>-->
+					<div class="col-lg-3">
+						<div class=" form-group">
+							<div class="input-group">
+								<span class="input-group-addon">Max. Current</span>
+								<input type="text" class="form-control" placeholder="2" ng-model="simulation.current">
+								<span class="input-group-addon">C</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon">Charging Time</span>
+								<input type="text" class="form-control" placeholder="1800" ng-model="simulation.time">
+								<span class="input-group-addon">sec</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-1"></div>
+					<div class="col-lg-4">
+						<div class="form-group text-center">
+							<button type="submit" class="btn btn-success" ng-click="baseCharge(simulation)">Basecase
+							</button>
+							<button type="submit" class="btn btn-warning" ng-click="optimalCharge(simulation)" ng-disabled="disableOptimal">Optimal
+							</button>
+							<button type="submit" class="btn btn-secondary" ng-click="resetGraph()">Reset</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- Graph Card -->
+	<div class="card card-block text-xs-center card-outline-primary " ng-show="showGraphCard">
+		<div class="row" ng-show="showCharts">
+			<div class="col-lg-12">
+				<p ng-show="showResultStatus" class="alert-success">{{ resultStatus }}</p><br>
+			</div>
+		</div>
+		<!-- First Row - Voltage and Fade -->
+		<div class="row" ng-show="showCharts">
+			<div class="col-lg-6">
+				<canvas class="chart chart-line" chart-data="current_data" chart-options="current_options"
+				        id="current_plot"></canvas>
+			</div>
+			<div class="col-lg-6">
+				<canvas class="chart chart-line" chart-data="voltage_data" chart-options="voltage_options"
+				        id="voltage_plot"></canvas>
+			</div>
+			<br>
+		</div>
+		<!-- Second Row - Current and cycle life -->
+		<div class="row" ng-show="showOptimal">
+			<div class="col-lg-12">
+				<br><br>
+				<p class="alert-info">{{ remainingLife }} % extra charge/cycle</p>
+			</div>
+		</div>
+		<div class="row" ng-show="showOptimal">
+			<br>
+			<div class="col-lg-4">
+				<h4>{{ mobileHours }} hours</h4>
+				<i class="fa fa-mobile fa-5x" aria-hidden="true"></i>
+			</div>
+			<div class="col-lg-4">
+				<h4>{{ extraMiles }} miles</h4>
+				<i class="fa fa-car fa-5x" aria-hidden="true"></i>
+			</div>
+			<div class="col-lg-4">
+				<h4>{{ extraCents }} Cents/kWh</h4>
+				<i class="fa fa-building-o fa-5x" aria-hidden="true"></i>
+			</div>
+		</div>
+	</div>
 </div>

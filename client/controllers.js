@@ -97,6 +97,7 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
         $scope.showGraphCard = false;
         $scope.showPlot = false;
         $scope.showOptimal = false;
+        $scope.disableOptimal = true;
 
         $scope.voltage_data = [];
         $scope.current_data = [];
@@ -148,6 +149,7 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
                         $scope.showCharts = true;
                         $scope.graphData = [];
                         $scope.showPlot = false;
+                        $scope.disableOptimal = false;
 
 
                         voltageData = [];
@@ -382,7 +384,9 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
                         $scope.current_data.push(currentData);
 
                         $scope.remainingLife = (($scope.optimalchargeStored - $scope.basechargeStored)*100/18.1).toFixed(2);
-
+                        $scope.mobileHours = (($scope.optimalchargeStored - $scope.basechargeStored)*12/2).toFixed(2);
+                        $scope.extraMiles = (($scope.optimalchargeStored - $scope.basechargeStored)*375*295/(100*1000)).toFixed(2);
+                        $scope.extraCents = (($scope.optimalchargeStored - $scope.basechargeStored)*375*295/(100*1000)).toFixed(2);
 	                    user = true;
 
                         deferred.resolve();
