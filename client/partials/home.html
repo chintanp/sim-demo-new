@@ -75,20 +75,24 @@
             <div class="col-lg-6">
                 <canvas class="chart chart-line" chart-data="current_data" chart-options="current_options" id="current_plot"></canvas>
             </div>
-            <div class="col-lg-6" style="position: relative">
-                <div id="gauge" style="margins: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, 0%);"></div>
+            <div class="col-lg-6">
+                <canvas class="chart chart-line" chart-data="voltage_data" chart-options="voltage_options" id="voltage_plot"></canvas>
             </div>
             <br>
         </div>
         <!-- Second Row - Current and cycle life -->
-        <div class="row" ng-show="showCharts">
-            <div class="col-lg-6">
-                <canvas class="chart chart-line" chart-data="voltage_data" chart-options="voltage_options" id="voltage_plot"></canvas>
+        <div class="row" ng-show="showOptimal">
+            <br><br>
+
+            <p class="alert-info">{{ remainingLife }} % extra charge/cycle</p>
+            <div class="col-lg-4">
+                <i class="fa fa-mobile fa-5x" aria-hidden="true"></i>
             </div>
-            <div class="col-lg-6" id="remaining-life">
-                <span>
-                    <h3>{{ remainingLife }} % extra charge stored per cycle</h3>
-                </span>
+            <div class="col-lg-4">
+                <i class="fa fa-car fa-5x" aria-hidden="true"></i>
+            </div>
+            <div class="col-lg-4">
+                <i class="fa fa-building-o fa-5x" aria-hidden="true"></i>
             </div>
 
         </div>

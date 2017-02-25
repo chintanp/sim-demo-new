@@ -352,7 +352,7 @@ router.post('/optimalCharge', function (req, res) {
 								arr_bound.push(fade_line);
 							}
 							else if (bound_count == 32) {
-
+								arr_bound.push(bound_line);
 								var bound_writeText = arr_bound.join("\n");
 
 								try {

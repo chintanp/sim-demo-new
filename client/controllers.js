@@ -95,6 +95,7 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
         $scope.showResultStatus = false;
         $scope.showGraphCard = false;
         $scope.showPlot = false;
+        $scope.showOptimal = false;
 
         $scope.voltage_data = [];
         $scope.current_data = [];
@@ -126,6 +127,7 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
 	        $scope.showCharts = false;
 	        $scope.graphData = [];
 	        $scope.showPlot = false;
+	        $scope.showOptimal = false;
 	        $scope.voltage_data = [];
 	        $scope.current_data = [];
 
@@ -279,6 +281,7 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
                         $scope.showResultStatus = true;
                         $scope.resultStatus = "Plotting Base Case and Optimal Case";
                         $scope.showCharts = true;
+                        $scope.showOptimal = true;
                         $scope.graphData = [];
                         $scope.showPlot = false;
 
@@ -377,7 +380,7 @@ angular.module('myApp').controller('homeController', ['$scope', '$location',
                         $scope.voltage_data.push(voltageData);
                         $scope.current_data.push(currentData);
 
-                        $scope.remainingLife = ($scope.optimalchargeStored - $scope.basechargeStored)*100/18.1;
+                        $scope.remainingLife = (($scope.optimalchargeStored - $scope.basechargeStored)*100/18.1).toFixed(2);
 
 	                    user = true;
 
